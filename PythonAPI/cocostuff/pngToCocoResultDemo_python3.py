@@ -1,6 +1,7 @@
 #!/usr/bin/python
 
 __author__ = 'hcaesar'
+# Modifications to convert the demo from Python 2 to Python 3 made by Jeffrey Wardman (JeffreyWardman)
 
 # Converts a folder of .png images with segmentation results back
 # to the COCO result format. 
@@ -52,9 +53,9 @@ def pngToCocoResultDemo(dataDir='../..', resType='examples', indent=None):
         print('Writing results to: %s' % jsonPath)
 
         # Annotation start
-        output.write(unicode('[\n'))
+        output.write(str('[\n'))
 
-        for i, imgName in zip(xrange(0, imgCount), imgNames):
+        for i, imgName in zip(range(0, imgCount), imgNames):
             print('Converting png image %d of %d: %s' % (i+1, imgCount, imgName))
 
             # Add stuff annotations
@@ -72,21 +73,29 @@ def pngToCocoResultDemo(dataDir='../..', resType='examples', indent=None):
             anns = pngToCocoResult(pngPath, imgId)
 
             # Write JSON
-            str_ = json.dumps(anns, indent=indent)
+            for dict in anns:
+                for key,val in dict.items():
+                    if key == 'segmentation':
+                        for key2, val2 in val.items():
+                            if key2 == 'counts':
+                                val2 = val2.decode('utf-8')
+                                val.update({key2 : val2})
+                                
+            str_ = json.dumps(anns)#, indent=indent)
             str_ = str_[1:-1]
             if len(str_) > 0:
-                output.write(unicode(str_))
+                output.write(str(str_))
                 annCount = annCount + 1
 
             # Add comma separator
             if i < imgCount-1 and len(str_) > 0:
-                output.write(unicode(','))
+                output.write(str(','))
 
             # Add line break
-            output.write(unicode('\n'))
+            output.write(str('\n'))
 
         # Annotation end
-        output.write(unicode(']'))
+        output.write(str(']'))
 
         # Create an error if there are no annotations
         if annCount == 0:

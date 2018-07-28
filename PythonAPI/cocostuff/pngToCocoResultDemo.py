@@ -1,7 +1,10 @@
 #!/usr/bin/python
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
+from builtins import range
 
 __author__ = 'hcaesar'
-# Modifications to convert the demo from Python 2 to Python 3 made by Jeffrey Wardman (JeffreyWardman)
+#JeffreyWardman the file to make it compatible with both versions of python.
 
 # Converts a folder of .png images with segmentation results back
 # to the COCO result format. 

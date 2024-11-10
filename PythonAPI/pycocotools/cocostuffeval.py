@@ -3,7 +3,7 @@ __author__ = 'hcaesar'
 import numpy as np
 import datetime
 import time
-from cocostuffhelper import cocoSegmentationToSegmentationMap
+from pycocotools.cocostuffhelper import cocoSegmentationToSegmentationMap
 
 class COCOStuffeval:
     # Internal functions for evaluating stuff segmentations against a ground-truth.
@@ -126,7 +126,11 @@ class COCOStuffeval:
 
         # Check that the result has only valid labels
         invalidLabels = [l for l in np.unique(labelMapRes) if l not in self.catIds]
-        if len(invalidLabels) > 0:
+
+        # For label 0
+        if len(invalidLabels) == 1 and invalidLabels[0] == 0:
+            pass
+        elif len(invalidLabels) > 0:
             raise Exception('Error: Invalid classes predicted in the result file: %s. Please insert only labels in the range [%d, %d]!'
             % (str(invalidLabels), min(self.catIds), max(self.catIds)))
         
@@ -208,8 +212,8 @@ class COCOStuffeval:
 
         # Compute confusion matrix for supercategories
         confusionSup = np.zeros((supCatCount, supCatCount))
-        for supCatIdA in xrange(0, supCatCount):
-            for supCatIdB in xrange(0, supCatCount):
+        for supCatIdA in range(0, supCatCount):
+            for supCatIdB in range(0, supCatCount):
                 curLeavesA = np.where([s == supCatIdA for s in supCatIds])[0] + self.stuffStartId - 1
                 curLeavesB = np.where([s == supCatIdB for s in supCatIds])[0] + self.stuffStartId - 1
                 confusionLeaves = confusion[curLeavesA, :]
@@ -230,8 +234,8 @@ class COCOStuffeval:
         labelCount = confusion.shape[0]
         ious = np.zeros((labelCount))
         maccs = np.zeros((labelCount))
-        ious[:] = np.NAN
-        maccs[:] = np.NAN
+        ious[:] = np.nan
+        maccs[:] = np.nan
 
         # Get true positives, positive predictions and positive ground-truth
         total = confusion.sum()

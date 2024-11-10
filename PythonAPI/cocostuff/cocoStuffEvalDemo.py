@@ -46,14 +46,14 @@ def cocoStuffEvalDemo(dataDir='../..', dataType='examples', resType='examples'):
 
     # Measure time
     import time
-    before = time.clock()
+    before = time.perf_counter()
 
     # Run evaluation on the example images
     cocoEval.evaluate()
     cocoEval.summarize()
 
     # Print time
-    after = time.clock()
+    after = time.perf_counter()
     print('Evaluation took %.2fs!' % (after - before))
 
 if __name__ == "__main__":

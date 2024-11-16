@@ -34,15 +34,15 @@ def cocoStuffDemo(dataDir='../..', dataType='train2017'):
     # Display COCO stuff categories and supercategories
     categories = cocoGt.loadCats(cocoGt.getCatIds())
     categoryNames = [cat['name'] for cat in categories]
-    print 'COCO Stuff leaf categories: \n', ' '.join(categoryNames)
+    print('COCO Stuff leaf categories: \n', ' '.join(categoryNames))
 
     superCategoryNames = sorted(set([cat['supercategory'] for cat in categories]))
-    print 'COCO Stuff super categories: \n', ' '.join(superCategoryNames)
+    print('COCO Stuff super categories: \n', ' '.join(superCategoryNames))
 
     # Load info for a random image
     imgIds = cocoGt.getImgIds()
     imgId = imgIds[np.random.randint(0, len(imgIds))]
-    print 'Processing image', imgId, '\n' 
+    print('Processing image', imgId, '\n')
     img = cocoGt.loadImgs(imgId)[0]
 
     # Load and display image

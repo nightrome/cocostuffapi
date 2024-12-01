@@ -20,7 +20,7 @@ __author__ = 'hcaesar'
 # Licensed under the Simplified BSD License [see coco/license.txt]
 
 import os
-import io
+import codecs
 import json
 import re
 from pycocotools.cocostuffhelper import pngToCocoResult
@@ -48,13 +48,13 @@ def pngToCocoResultDemo(dataDir='../..', resType='examples', indent=None):
     # Init
     annCount = 0
 
-    with io.open(jsonPath, 'w', encoding='utf8') as output:
+    with codecs.open(jsonPath, 'w', encoding='utf8') as output:
         print('Writing results to: %s' % jsonPath)
 
         # Annotation start
-        output.write(unicode('[\n'))
+        output.write('[\n')
 
-        for i, imgName in zip(xrange(0, imgCount), imgNames):
+        for i, imgName in zip(range(0, imgCount), imgNames):
             print('Converting png image %d of %d: %s' % (i+1, imgCount, imgName))
 
             # Add stuff annotations
@@ -75,18 +75,18 @@ def pngToCocoResultDemo(dataDir='../..', resType='examples', indent=None):
             str_ = json.dumps(anns, indent=indent)
             str_ = str_[1:-1]
             if len(str_) > 0:
-                output.write(unicode(str_))
+                output.write(str_)
                 annCount = annCount + 1
 
             # Add comma separator
             if i < imgCount-1 and len(str_) > 0:
-                output.write(unicode(','))
+                output.write(',')
 
             # Add line break
-            output.write(unicode('\n'))
+            output.write('\n')
 
         # Annotation end
-        output.write(unicode(']'))
+        output.write(']')
 
         # Create an error if there are no annotations
         if annCount == 0:

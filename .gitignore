@@ -17,3 +17,5 @@ PythonAPI/pycocotools/cocoeval.pyc
 PythonAPI/pycocotools/cocostuffeval.pyc
 PythonAPI/pycocotools/mask.pyc
 PythonAPI/build/
+
+.venv/

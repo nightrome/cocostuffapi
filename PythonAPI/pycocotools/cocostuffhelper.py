@@ -30,7 +30,7 @@ def segmentationToCocoMask(labelMap, labelId):
     Rs = mask.encode(labelMask)
     assert len(Rs) == 1
     Rs = Rs[0]
-
+    Rs["counts"] = Rs["counts"].decode("utf-8")
     return Rs
 
 def segmentationToCocoResult(labelMap, imgId, stuffStartId=92):
@@ -95,7 +95,7 @@ def cocoSegmentationToSegmentationMap(coco, imgId, checkUniquePixelLabel=True, i
 
     # Combine all annotations of this image in labelMap
     #labelMasks = mask.decode([a['segmentation'] for a in imgAnnots])
-    for a in xrange(0, len(imgAnnots)):
+    for a in range(0, len(imgAnnots)):
         labelMask = coco.annToMask(imgAnnots[a]) == 1
         #labelMask = labelMasks[:, :, a] == 1
         newLabel = imgAnnots[a]['category_id']
@@ -147,6 +147,7 @@ def cocoSegmentationToPng(coco, imgId, pngPath, includeCrowd=False):
     padding = np.zeros((256-cmap.shape[0], 3), np.int8)
     cmap = np.vstack((cmap, padding))
     cmap = cmap.reshape((-1))
+    cmap = cmap.tolist()
     assert len(cmap) == 768, 'Error: Color map must have exactly 256*3 elements!'
 
     # Write to png file
